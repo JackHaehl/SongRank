@@ -49,13 +49,34 @@ print(len(eloList))
 inputText = ""
 
 K = 30
+indexOfA = 0
+indexOfB = 0
+winnerStay = 0
+previousWinner = 0
+
+print("Should the winner stay? (yes or no)")
+if input() == "yes":
+    winnerStay = 1
+else:
+    winnerStay = 0
 
 while(inputText != "End"):
     print("------NEW PAIRING-----")
-    indexOfA = random.randint(0, len(trackList) - 1)
-    indexOfB = random.randint(0, len(trackList) - 1)
-    while(indexOfB==indexOfA):
+    if winnerStay == 0:
+        indexOfA = random.randint(0, len(trackList) - 1)
         indexOfB = random.randint(0, len(trackList) - 1)
+        while (indexOfB == indexOfA):
+            indexOfB = random.randint(0, len(trackList) - 1)
+    elif winnerStay == 1 & previousWinner == 1:
+        indexOfB = random.randint(0, len(trackList) - 1)
+        while(indexOfB == indexOfA):
+            indexOfB = random.randint(0, len(trackList) - 1)
+    else:
+        indexOfA = random.randint(0, len(trackList) - 1)
+        while(indexOfB == indexOfA):
+            indexOfA = random.randint(0, len(trackList) - 1)
+
+
     trackA = trackList[indexOfA]
     trackB = trackList[indexOfB]
     eloA = eloList[indexOfA]
@@ -66,8 +87,10 @@ while(inputText != "End"):
         break
     elif inputText == "a":
         changes = EloRating(float(eloA),float(eloB),K,1,trackA,trackB)
+        previousWinner = 1
     else:
         changes = EloRating(float(eloA),float(eloB),K,0,trackA,trackB)
+        previousWinner = 0
     eloList[indexOfA] = changes[0]
     eloList[indexOfB] = changes[1]
 
